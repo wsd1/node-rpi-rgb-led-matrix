@@ -42,6 +42,8 @@ class LedMatrix : public node::ObjectWrap {
 		void Draw(int screenx, int screeny, int width, int height, int imgx, int imgy,
 					bool looph, bool loopv);
 
+		void Update (void);
+
 	protected:
 		LedMatrix(int rows , int cols , int chained_displays , int parallel_displays, const char* mapping);
 
@@ -56,6 +58,7 @@ class LedMatrix : public node::ObjectWrap {
 		static void Fill(const Nan::FunctionCallbackInfo<v8::Value>& args);
 		static void SetImageBuffer(const Nan::FunctionCallbackInfo<v8::Value>& args);
 		static void Draw(const Nan::FunctionCallbackInfo<v8::Value>& args);
+		static void Update (const Nan::FunctionCallbackInfo<v8::Value>& args);
 
 		static void Scroll(const Nan::FunctionCallbackInfo<v8::Value>& args);
 		static void UV_Scroll(uv_work_t* work);
@@ -65,6 +68,8 @@ class LedMatrix : public node::ObjectWrap {
 
 		GPIO io;
 		RGBMatrix* matrix;
+		FrameCanvas* canvas;
+
 
 		Image* image;
 

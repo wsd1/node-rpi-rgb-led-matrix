@@ -36,6 +36,8 @@ LedMatrix::LedMatrix(int rows, int cols , int parallel_displays, int chained_dis
 	assert(io.Init());
 	matrix = new RGBMatrix(&io, defaults);	
 	matrix->set_luminance_correct(true);
+
+	canvas = matrix->CreateFrameCanvas();
 	image = NULL;
 }
 
@@ -61,6 +63,7 @@ void LedMatrix::Init(v8::Local<v8::Object> exports) {
 	Nan::SetPrototypeMethod(tpl, "setImageBuffer", SetImageBuffer);
 	Nan::SetPrototypeMethod(tpl, "draw", Draw);
 	Nan::SetPrototypeMethod(tpl, "scroll", Scroll);
+	Nan::SetPrototypeMethod(tpl, "update", Update);
 	
 	constructor.Reset(tpl->GetFunction());
 
@@ -68,31 +71,31 @@ void LedMatrix::Init(v8::Local<v8::Object> exports) {
 }
 
 int LedMatrix::GetWidth() {
-	return matrix->width();
+	return canvas->width();
 }
 
 int LedMatrix::GetHeight() {
-	return matrix->height();
+	return canvas->height();
 }
 
 void LedMatrix::SetPixel(int x, int y, uint8_t r, uint8_t g, uint8_t b) {
-	matrix->SetPixel(x, y, r, g, b);
+	canvas->SetPixel(x, y, r, g, b);
 }
 
 void LedMatrix::Clear() {
-	matrix->Clear();
+	canvas->Clear();
 }
 
 void LedMatrix::Clear(int x, int y, int w, int h) {
 	for(int j=y; j<y+h; j++) {
 		for(int i=x; i<x+w; i++) {
-			matrix->SetPixel(i, j, 0, 0, 0);
+			canvas->SetPixel(i, j, 0, 0, 0);
 		}
 	}
 }
 
 void LedMatrix::Fill(uint8_t r, uint8_t g, uint8_t b) {
-	matrix->Fill(r, g, b);
+	canvas->Fill(r, g, b);
 }
 
 void LedMatrix::SetImage(Image* img) {
@@ -125,10 +128,20 @@ void LedMatrix::Draw(int screenx, int screeny, int width, int height, int imgx, 
 			int py = (j + imgy) % image->GetHeight();
 			int sy = j + screeny;
 			Pixel p = image->GetPixel(px, py);
-			matrix->SetPixel(sx, sy, p.R(), p.G(), p.B());
+			canvas->SetPixel(sx, sy, p.R(), p.G(), p.B());
 		}
 	}
 }	
+
+void LedMatrix :: Update (void)
+{
+	const char* data; 
+	size_t len; 
+
+	canvas->Serialize(&data, &len); 
+	canvas = matrix->SwapOnVSync(canvas);
+	canvas->Deserialize(data, len);
+}
 
 void LedMatrix::New(const Nan::FunctionCallbackInfo<Value>& args) {
 	// throw an error if it's not a constructor 
@@ -332,6 +345,13 @@ void LedMatrix::Scroll(const Nan::FunctionCallbackInfo<v8::Value>& args) {
 
 		return Nan::ThrowTypeError("Internal error: Failed to queue scroll work");
 	}
+}
+
+void LedMatrix::Update(const Nan::FunctionCallbackInfo<v8::Value>& args) {
+	LedMatrix* matrix = ObjectWrap::Unwrap<LedMatrix>(args.Holder());
+
+	matrix->Update();
+
 }
 
 void LedMatrix::UV_Scroll(uv_work_t* work) {

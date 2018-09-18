@@ -11,11 +11,11 @@
 
 #include <stdlib.h>
 #include <unistd.h>
+#include <string> 
 
 #include <led-matrix.h>
 #include <ledmatrix.h>
-
-#include <string> 
+#include <graphics.h>
 
 using namespace v8;
 using namespace node;
@@ -64,6 +64,7 @@ void LedMatrix::Init(v8::Local<v8::Object> exports) {
 	Nan::SetPrototypeMethod(tpl, "draw", Draw);
 	Nan::SetPrototypeMethod(tpl, "scroll", Scroll);
 	Nan::SetPrototypeMethod(tpl, "update", Update);
+	Nan::SetPrototypeMethod(tpl, "textTest", TextTest);
 	
 	constructor.Reset(tpl->GetFunction());
 
@@ -141,6 +142,36 @@ void LedMatrix :: Update (void)
 	canvas->Serialize(&data, &len); 
 	canvas = matrix->SwapOnVSync(canvas);
 	canvas->Deserialize(data, len);
+}
+
+void LedMatrix :: TextTest (const char* text, const char* fontFile) 
+{
+	rgb_matrix::Font font; 
+	font.LoadFont(fontFile); 
+	Color bg(0,0,0);
+	Color fg(255,255,255);
+	rgb_matrix::DrawText(canvas, font, 0, 0 + font.baseline(), fg, text); 
+}
+
+void LedMatrix :: TextTest (const Nan::FunctionCallbackInfo<Value>& args)  
+{
+	LedMatrix* matrix = ObjectWrap::Unwrap<LedMatrix>(args.Holder());
+	std::string text; 
+	std::string font; 
+
+	if(args.Length() > 0 && args[0]->IsString()) 
+	{
+		v8::String::Utf8Value str(args[0]->ToString()); 
+		text = std::string(*str); 
+	}
+
+	if(args.Length() > 1 && args[1]->IsString()) 
+	{
+		v8::String::Utf8Value str(args[1]->ToString()); 
+		font = std::string(*str); 
+	}
+	
+	return matrix->TextTest(text.c_str(), font.c_str());
 }
 
 void LedMatrix::New(const Nan::FunctionCallbackInfo<Value>& args) {

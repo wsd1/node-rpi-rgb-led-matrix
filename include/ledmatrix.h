@@ -41,6 +41,7 @@ class LedMatrix : public node::ObjectWrap {
 		void SetImage(Image* img);
 		void Draw(int screenx, int screeny, int width, int height, int imgx, int imgy,
 					bool looph, bool loopv);
+		void TextTest(const char* text, const char* fontFile); 
 
 		void Update (void);
 
@@ -59,6 +60,7 @@ class LedMatrix : public node::ObjectWrap {
 		static void SetImageBuffer(const Nan::FunctionCallbackInfo<v8::Value>& args);
 		static void Draw(const Nan::FunctionCallbackInfo<v8::Value>& args);
 		static void Update (const Nan::FunctionCallbackInfo<v8::Value>& args);
+		static void TextTest (const Nan::FunctionCallbackInfo<v8::Value>& args);
 
 		static void Scroll(const Nan::FunctionCallbackInfo<v8::Value>& args);
 		static void UV_Scroll(uv_work_t* work);

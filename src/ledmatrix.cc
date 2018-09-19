@@ -64,7 +64,7 @@ void LedMatrix::Init(v8::Local<v8::Object> exports) {
 	Nan::SetPrototypeMethod(tpl, "draw", Draw);
 	Nan::SetPrototypeMethod(tpl, "scroll", Scroll);
 	Nan::SetPrototypeMethod(tpl, "update", Update);
-	Nan::SetPrototypeMethod(tpl, "textTest", TextTest);
+	Nan::SetPrototypeMethod(tpl, "drawText", DrawText);
 	
 	constructor.Reset(tpl->GetFunction());
 
@@ -144,34 +144,46 @@ void LedMatrix :: Update (void)
 	canvas->Deserialize(data, len);
 }
 
-void LedMatrix :: TextTest (const char* text, const char* fontFile) 
+void LedMatrix :: DrawText (int x, int y, const char* text, const char* fontFile) 
 {
 	rgb_matrix::Font font; 
 	font.LoadFont(fontFile); 
 	Color bg(0,0,0);
 	Color fg(255,255,255);
-	rgb_matrix::DrawText(canvas, font, 0, 0 + font.baseline(), fg, text); 
+	rgb_matrix::DrawText(canvas, font, x, y + font.baseline(), fg, text); 
 }
 
-void LedMatrix :: TextTest (const Nan::FunctionCallbackInfo<Value>& args)  
+void LedMatrix :: DrawText (const Nan::FunctionCallbackInfo<Value>& args)  
 {
 	LedMatrix* matrix = ObjectWrap::Unwrap<LedMatrix>(args.Holder());
 	std::string text; 
 	std::string font; 
+	int x = 0; 
+	int y = 0; 
 
-	if(args.Length() > 0 && args[0]->IsString()) 
+	if(args.Length() > 0 && args[0]->IsNumber())
 	{
-		v8::String::Utf8Value str(args[0]->ToString()); 
+		x = args[0]->ToInteger()->Value();
+	}
+
+	if(args.Length() > 1 && args[1]->IsNumber())
+	{
+		y = args[1]->ToInteger()->Value();
+	}
+
+	if(args.Length() > 2 && args[2]->IsString()) 
+	{
+		v8::String::Utf8Value str(args[2]->ToString()); 
 		text = std::string(*str); 
 	}
 
-	if(args.Length() > 1 && args[1]->IsString()) 
+	if(args.Length() > 3 && args[3]->IsString()) 
 	{
-		v8::String::Utf8Value str(args[1]->ToString()); 
+		v8::String::Utf8Value str(args[3]->ToString()); 
 		font = std::string(*str); 
 	}
 	
-	return matrix->TextTest(text.c_str(), font.c_str());
+	return matrix->DrawText(x, y, text.c_str(), font.c_str());
 }
 
 void LedMatrix::New(const Nan::FunctionCallbackInfo<Value>& args) {

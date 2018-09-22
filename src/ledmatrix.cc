@@ -24,13 +24,14 @@ using rgb_matrix::GPIO;
 
 Nan::Persistent<v8::Function> LedMatrix::constructor;
 
-LedMatrix::LedMatrix(int rows, int cols , int parallel_displays, int chained_displays, const char* mapping) {
+LedMatrix::LedMatrix(int rows, int cols , int parallel_displays, int chained_displays, int brightness, const char* mapping) {
 
 	RGBMatrix::Options defaults; 
 	defaults.rows = rows;
 	defaults.cols = cols; 
 	defaults.chain_length = chained_displays;
 	defaults.parallel = parallel_displays; 
+	defaults.brightness = brightness;
 	defaults.hardware_mapping = mapping;
 
 	assert(io.Init());
@@ -197,6 +198,7 @@ void LedMatrix::New(const Nan::FunctionCallbackInfo<Value>& args) {
 	int cols = 32;
 	int chained = 1;
 	int parallel = 1;
+	int brightness = 100;
 	std::string mapping = "regular";
 
 	if(args.Length() > 0 && args[0]->IsNumber()) {
@@ -213,15 +215,20 @@ void LedMatrix::New(const Nan::FunctionCallbackInfo<Value>& args) {
 		parallel = args[3]->ToInteger()->Value();
 	}
 
-	if(args.Length() > 4 && args[4]->IsString()) {
+	if(args.Length() > 4 && args[4]->IsNumber()  {
+		brightness = args[4]->ToInteger()->Value();
+	}
 
-		v8::String::Utf8Value str(args[4]->ToString());
+
+	if(args.Length() > 5 && args[5]->IsString()) {
+
+		v8::String::Utf8Value str(args[5]->ToString());
 		mapping = std::string(*str);
 	}
 
 	// make the matrix
 
-	LedMatrix* matrix = new LedMatrix(rows, cols, chained, parallel, mapping.c_str());
+	LedMatrix* matrix = new LedMatrix(rows, cols, chained, parallel, brightness,  mapping.c_str());
 	matrix->Wrap(args.This());
 
 	// return this object

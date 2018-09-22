@@ -215,7 +215,7 @@ void LedMatrix::New(const Nan::FunctionCallbackInfo<Value>& args) {
 		parallel = args[3]->ToInteger()->Value();
 	}
 
-	if(args.Length() > 4 && args[4]->IsNumber()  {
+	if(args.Length() > 4 && args[4]->IsNumber())  {
 		brightness = args[4]->ToInteger()->Value();
 	}
 

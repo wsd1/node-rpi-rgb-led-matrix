@@ -145,12 +145,12 @@ void LedMatrix :: Update (void)
 	canvas->Deserialize(data, len);
 }
 
-void LedMatrix :: DrawText (int x, int y, const char* text, const char* fontFile) 
+void LedMatrix :: DrawText (int x, int y, std::tuple<int, int, int> Color, const char* text, const char* fontFile) 
 {
 	rgb_matrix::Font font; 
 	font.LoadFont(fontFile); 
 	Color bg(0,0,0);
-	Color fg(255,255,255);
+	Color fg(std::get<0>(Color), std::get<1>(Color), std::get<2>(Color));
 	rgb_matrix::DrawText(canvas, font, x, y + font.baseline(), fg, text); 
 }
 
@@ -161,6 +161,10 @@ void LedMatrix :: DrawText (const Nan::FunctionCallbackInfo<Value>& args)
 	std::string font; 
 	int x = 0; 
 	int y = 0; 
+
+	int r = 255; 
+	int g = 255; 
+	int b = 255; 
 
 	if(args.Length() > 0 && args[0]->IsNumber())
 	{
@@ -183,8 +187,29 @@ void LedMatrix :: DrawText (const Nan::FunctionCallbackInfo<Value>& args)
 		v8::String::Utf8Value str(args[3]->ToString()); 
 		font = std::string(*str); 
 	}
+
+	if(args.Length() > 4 && args[4]->IsNumber())
+	{
+		r = args[4]->ToInteger()->Value();
+	}
+
+	if(args.Length() > 5 && args[5]->IsNumber())
+	{
+		r = args[5]->ToInteger()->Value();
+	}
+
+	if(args.Length() > 6 && args[6]->IsNumber())
+	{
+		r = args[6]->ToInteger()->Value();
+	}
+
+
+
+
+
+
 	
-	return matrix->DrawText(x, y, text.c_str(), font.c_str());
+	return matrix->DrawText(x, y, std::make_tuple(r,g,b), text.c_str(), font.c_str());
 }
 
 void LedMatrix::New(const Nan::FunctionCallbackInfo<Value>& args) {

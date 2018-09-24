@@ -9,6 +9,8 @@
 #ifndef NODE_LED_MATRIX_H
 #define NODE_LED_MATRIX_H
 
+#include <tuple>
+
 #include <node.h>
 #include <node_object_wrap.h>
 #include <nan.h>
@@ -41,7 +43,7 @@ class LedMatrix : public node::ObjectWrap {
 		void SetImage(Image* img);
 		void Draw(int screenx, int screeny, int width, int height, int imgx, int imgy,
 					bool looph, bool loopv);
-		void DrawText(int, int, const char* text, const char* fontFile); 
+		void DrawText(int, int, std::tuple<int, int, int>, const char* text, const char* fontFile); 
 
 		void Update (void);
 

@@ -195,12 +195,12 @@ void LedMatrix :: DrawText (const Nan::FunctionCallbackInfo<Value>& args)
 
 	if(args.Length() > 5 && args[5]->IsNumber())
 	{
-		r = args[5]->ToInteger()->Value();
+		g = args[5]->ToInteger()->Value();
 	}
 
 	if(args.Length() > 6 && args[6]->IsNumber())
 	{
-		r = args[6]->ToInteger()->Value();
+		b = args[6]->ToInteger()->Value();
 	}
 
 

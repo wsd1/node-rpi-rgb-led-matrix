@@ -145,12 +145,12 @@ void LedMatrix :: Update (void)
 	canvas->Deserialize(data, len);
 }
 
-void LedMatrix :: DrawText (int x, int y, std::tuple<int, int, int> Color, const char* text, const char* fontFile) 
+void LedMatrix :: DrawText (int x, int y, std::tuple<int, int, int> color, const char* text, const char* fontFile) 
 {
 	rgb_matrix::Font font; 
 	font.LoadFont(fontFile); 
 	Color bg(0,0,0);
-	Color fg(std::get<0>(Color), std::get<1>(Color), std::get<2>(Color));
+	Color fg(std::get<0>(color), std::get<1>(color), std::get<2>(color));
 	rgb_matrix::DrawText(canvas, font, x, y + font.baseline(), fg, text); 
 }
 

@@ -1,10 +1,8 @@
 # node-rpi-rgb-led-matrix
 Pilot your rgb led matrix with Nodejs on Raspberry Pi ! Nodejs binding of rpi-rgb-led-matrix library https://github.com/hzeller/rpi-rgb-led-matrix
+B
 
-**PROJECT NOT MAINTAINED ! :(**
-
-**It probably will not work with recent nodejs version.**
-
+**Actively being maintained and modifid for: https://github.com/keptan/node-red-contrib-led-matrix**
 **It is binding recent version of rpi-rgb-led-matrix library.**
 
 ## Compatibility
@@ -35,19 +33,24 @@ matrix.fill(255, 50, 100);
 matrix.setPixel(0, 0, 0, 50, 255);
 ```
 
+The API has changed somewhat since the zeitungen version
 ## LedMatrix API
 
-* **Constructor: LedMatrix(rows, cols,  chainedDisplays, parallelDisplays, hardware-mapping)**
-  default values are `rows=32`, `cols=32`,  `chainedDisplays=1`, `parallelDisplay=1`, `hardware-mapping=regular`
+**All operations modify a local frame buffer, only after calling 'Update' are they printed to the display**
+
+* **Constructor: LedMatrix(rows, cols,  chainedDisplays, parallelDisplays, brightness,  hardware-mapping)**
+  default values are `rows=32`, `cols=32`,  `chainedDisplays=1`, `parallelDisplay=1`, 'brightness=100', `hardware-mapping=regular`
 * **getWidth()** return current led matrix width
 * **getHeight()** return current led matrix height
-* **fill(red, green, blue)** fill the led matrix with color specified
+* **fill(red, green, blue)** fill the led matrix buffer with color specified
   by `red`, `green` and `blue`. `red`, `green` and `blue` must be between `0` and `255` 
 * **setPixel(x, y, red, green, blue)** set the color pixel at the position `x`,`y` 
   with color specified by `red`, `green` and `blue`. `red`, `green` and `blue` must be
   between `0` and `255`. `x` must be between `0` and `getWidth()`. `y` must be between
   `0`and `getGeight()`
-* **clear()** reset the led matrix display (shut down all leds)
+* **drawText(x, y, r, g, b, text, fontFile)** draws colored text to the buffer 
+* **clear()** reset the led matrix display buffer (shut down all leds)
+* **update()** draw the current buffer to the display with vsync
 
 
 ## Add specific defines for rpi-rgb-led-matrix

@@ -66,6 +66,8 @@ void LedMatrix::Init(v8::Local<v8::Object> exports) {
 	Nan::SetPrototypeMethod(tpl, "scroll", Scroll);
 	Nan::SetPrototypeMethod(tpl, "update", Update);
 	Nan::SetPrototypeMethod(tpl, "drawText", DrawText);
+	Nan::SetPrototypeMethod(tpl, "drawCircle", DrawCircle);
+	Nan::SetPrototypeMethod(tpl, "drawLine", DrawLine);
 	
 	constructor.Reset(tpl->GetFunction());
 
@@ -204,13 +206,121 @@ void LedMatrix :: DrawText (const Nan::FunctionCallbackInfo<Value>& args)
 	}
 
 
-
-
-
-
 	
 	return matrix->DrawText(x, y, std::make_tuple(r,g,b), text.c_str(), font.c_str());
 }
+
+void LedMatrix :: DrawCircle (int x, int y, int radius, std::tuple<int, int, int> color)
+{
+	Color fg( std::get<0>(color), std::get<1>(color), std::get<2>(color)); 
+
+	rgb_matrix::DrawCircle(canvas, x, y, radius, fg);
+}
+
+void LedMatrix :: DrawCircle (const Nan::FunctionCallbackInfo<Value>& args)
+{
+	LedMatrix* matrix = ObjectWrap::Unwrap<LedMatrix>(args.Holder()); 
+	int x = 0; 
+	int y = 0; 
+	int radius = 0; 
+
+	int r = 255; 
+	int g = 255; 
+	int b = 255; 
+
+	if(args.Length() > 0 && args[0]->IsNumber())
+	{
+		x = args[0]->ToInteger()->Value();
+	}
+
+	if(args.Length() > 1 && args[1]->IsNumber()) 
+	{
+		y = args[1]->ToInteger()->Value(); 
+	}
+
+	if(args.Length() > 2 && args[2]->IsNumber())
+	{
+		radius = args[2]->ToInteger()->Value();
+	}
+
+	if(args.Length() > 3 && args[3]->IsNumber())
+	{
+		r = args[3]->ToInteger()->Value();
+	}
+
+	if(args.Length() > 4 && args[4]->IsNumber())
+	{
+		g = args[4]->ToInteger()->Value();
+	}
+
+	if(args.Length() > 5 && args[5]->IsNumber())
+	{
+		b = args[5]->ToInteger()->Value();
+	}
+
+	return matrix->DrawCircle( x, y, radius, std::make_tuple(r, g, b));
+}
+	
+void LedMatrix :: DrawLine   (int x0, int y0, int x1, int y1, std::tuple<int, int, int> color)
+{
+	Color fg( std::get<0>(color), std::get<1>(color), std::get<2>(color)); 
+
+	rgb_matrix::DrawLine(canvas, x0, y0, x1, x1, fg);
+}
+
+void LedMatrix :: DrawLine   (const Nan::FunctionCallbackInfo<Value>& args) 
+{
+	LedMatrix* matrix = ObjectWrap::Unwrap<LedMatrix>(args.Holder()); 
+	int x0 = 0; 
+	int y0 = 0; 
+	int x1 = 0; 
+	int y1 = 0; 
+	int r = 0; 
+	int g = 0; 
+	int b = 0; 
+
+	if (args.Length() > 0 && args[0]->IsNumber())
+	{
+		x0 = args[0]->ToInteger()->Value();
+	}
+
+	if (args.Length() > 1 && args[1]->IsNumber())
+	{
+		y0 = args[1]->ToInteger()->Value();
+	}
+
+	if (args.Length() > 2 && args[2]->IsNumber())
+	{
+		x1 = args[2]->ToInteger()->Value();
+	}
+
+	if (args.Length() > 3 && args[3]->IsNumber())
+	{
+		y1 = args[3]->ToInteger()->Value();
+	}
+
+	if (args.Length() > 4 && args[4]->IsNumber())
+	{
+		r = args[4]->ToInteger()->Value();
+	}
+
+	if (args.Length() > 5 && args[5]->IsNumber())
+	{
+		g = args[4]->ToInteger()->Value();
+	}
+
+
+	if (args.Length() > 6 && args[6]->IsNumber())
+	{
+		b = args[5]->ToInteger()->Value();
+	}
+
+	return matrix->DrawLine( x0, y0, x1, y1, std::make_tuple(r, g, b));
+}
+
+
+	
+
 
 void LedMatrix::New(const Nan::FunctionCallbackInfo<Value>& args) {
 	// throw an error if it's not a constructor 

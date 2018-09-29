@@ -265,7 +265,7 @@ void LedMatrix :: DrawLine   (int x0, int y0, int x1, int y1, std::tuple<int, in
 {
 	Color fg( std::get<0>(color), std::get<1>(color), std::get<2>(color)); 
 
-	rgb_matrix::DrawLine(canvas, x0, y0, x1, x1, fg);
+	rgb_matrix::DrawLine(canvas, x0, y0, x1, y1, fg);
 }
 
 void LedMatrix :: DrawLine   (const Nan::FunctionCallbackInfo<Value>& args) 

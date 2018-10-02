@@ -306,15 +306,35 @@ void LedMatrix :: DrawLine   (const Nan::FunctionCallbackInfo<Value>& args)
 
 	if (args.Length() > 5 && args[5]->IsNumber())
 	{
-		g = args[5]->ToInteger()->Value();
+		g = args[4]->ToInteger()->Value();
 	}
+
 
 	if (args.Length() > 6 && args[6]->IsNumber())
 	{
-		b = args[6]->ToInteger()->Value();
+		b = args[5]->ToInteger()->Value();
 	}
 
 	return matrix->DrawLine( x0, y0, x1, y1, std::make_tuple(r, g, b));
+}
+void LedMatrix :: Brightness (int b)
+{
+
+	matrix->SetBrightness(b);
+}
+
+void LedMatrix :: Brightness (const Nan::FunctionCallbackInfo<Value>& args)
+{
+	LedMatrix* matrix = ObjectWrap::Unwrap<LedMatrix>(args.Holder()); 
+	int b = 100; 
+
+	if (args.Length() > 0 && args[0]->IsNumber())
+	{
+
+		b = args[0]->ToInteger()->Value();
+	}
+
+	return matrix->Brightness(b);
 }
 
 

@@ -46,6 +46,7 @@ class LedMatrix : public node::ObjectWrap {
 		void DrawText(int, int, std::tuple<int, int, int>, const char* text, const char* fontFile); 
 		void DrawCircle(int, int, int, std::tuple<int, int, int>);
 		void DrawLine (int, int, int, int, std::tuple<int, int, int>); 
+		void Brightness (int); 
 
 
 		void Update (void);
@@ -68,6 +69,7 @@ class LedMatrix : public node::ObjectWrap {
 		static void DrawText (const Nan::FunctionCallbackInfo<v8::Value>& args);
 		static void DrawCircle (const Nan::FunctionCallbackInfo<v8::Value>& args);
 		static void DrawLine  (const Nan::FunctionCallbackInfo<v8::Value>& args);
+		static void Brightness (const Nan::FunctionCallbackInfo<v8::Value>& args);
 
 		static void Scroll(const Nan::FunctionCallbackInfo<v8::Value>& args);
 		static void UV_Scroll(uv_work_t* work);

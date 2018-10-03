@@ -26,12 +26,16 @@
 			"./external/matrix/lib/hardware-mapping.c",
 
 			],
+			"defines": [ 
+			"DFIXED_FRAME_MICROSECONDS=8500",
+			],
 
 			"libraries": ["-lrt", "-lm", "-lpthread"],
 			"include_dirs": [ "external/matrix/include" ],
 	        "direct_dependent_settings": {
 	            "include_dirs": [ "external/matrix/include" ]
 	        }
+
 		}
 	]
 }

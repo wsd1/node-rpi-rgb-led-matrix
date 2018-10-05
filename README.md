@@ -1,8 +1,11 @@
 # node-rpi-rgb-led-matrix
 Pilot your rgb led matrix with Nodejs on Raspberry Pi ! Nodejs binding of rpi-rgb-led-matrix library https://github.com/hzeller/rpi-rgb-led-matrix
-B
+
+
+**Fork of: https://github.com/zeitungen/node-rpi-rgb-led-matrix**
 
 **Actively being maintained and modifid for: https://github.com/keptan/node-red-contrib-led-matrix**
+
 **It is binding recent version of rpi-rgb-led-matrix library.**
 
 ## Compatibility
@@ -49,6 +52,8 @@ The API has changed somewhat since the zeitungen version
   between `0` and `255`. `x` must be between `0` and `getWidth()`. `y` must be between
   `0`and `getGeight()`
 * **drawText(x, y, r, g, b, text, fontFile)** draws colored text to the buffer 
+* **drawCircle(x, y, radius, r, g, b)** draws colored circle to the buffer 
+* **drawLine(x0, y0, x1, y1, r, g, b)** draws colored lines to the buffer
 * **clear()** reset the led matrix display buffer (shut down all leds)
 * **update()** draw the current buffer to the display with vsync
 

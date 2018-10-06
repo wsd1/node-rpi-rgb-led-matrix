@@ -23,6 +23,8 @@ using namespace rgb_matrix;
 using rgb_matrix::GPIO;
 
 Nan::Persistent<v8::Function> LedMatrix::constructor;
+std::map<std::string, rgb_matrix::Font> LedMatrix::fontMap;
+
 
 LedMatrix::LedMatrix(int rows, int cols , int parallel_displays, int chained_displays, int brightness, const char* mapping) {
 
@@ -149,11 +151,19 @@ void LedMatrix :: Update (void)
 
 void LedMatrix :: DrawText (int x, int y, std::tuple<int, int, int> color, const char* text, const char* fontFile) 
 {
-	rgb_matrix::Font font; 
-	font.LoadFont(fontFile); 
+	const std::string file = fontFile; 
+	auto it = fontMap.find(file); 
+
+	if(it == fontMap.end())
+	{
+		fontMap.emplace(std::piecewise_construct, std::make_tuple(file), std::make_tuple());
+		it = fontMap.find(file);
+		it->second.LoadFont(file.c_str());
+	}
+	
 	Color bg(0,0,0);
 	Color fg(std::get<0>(color), std::get<1>(color), std::get<2>(color));
-	rgb_matrix::DrawText(canvas, font, x, y + font.baseline(), fg, text); 
+	rgb_matrix::DrawText(canvas, it->second, x, y + it->second.baseline(), fg, text); 
 }
 
 void LedMatrix :: DrawText (const Nan::FunctionCallbackInfo<Value>& args)  

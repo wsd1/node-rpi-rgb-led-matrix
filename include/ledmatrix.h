@@ -10,12 +10,14 @@
 #define NODE_LED_MATRIX_H
 
 #include <tuple>
+#include <map>
 
 #include <node.h>
 #include <node_object_wrap.h>
 #include <nan.h>
 #include <led-matrix.h>
 #include <image.h>
+#include <graphics.h>
 
 using namespace rgb_matrix;
 using rgb_matrix::GPIO;
@@ -74,6 +76,8 @@ class LedMatrix : public node::ObjectWrap {
 		static void Scroll(const Nan::FunctionCallbackInfo<v8::Value>& args);
 		static void UV_Scroll(uv_work_t* work);
 		static void UV_AfterScroll(uv_work_t* work, int status);
+
+		static std::map<std::string, rgb_matrix::Font> fontMap;
 
 	private:
 

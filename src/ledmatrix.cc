@@ -317,13 +317,13 @@ void LedMatrix :: DrawLine   (const Nan::FunctionCallbackInfo<Value>& args)
 
 	if (args.Length() > 5 && args[5]->IsNumber())
 	{
-		g = args[4]->ToInteger()->Value();
+		g = args[5]->ToInteger()->Value();
 	}
 
 
 	if (args.Length() > 6 && args[6]->IsNumber())
 	{
-		b = args[5]->ToInteger()->Value();
+		b = args[6]->ToInteger()->Value();
 	}
 
 	return matrix->DrawLine( x0, y0, x1, y1, std::make_tuple(r, g, b));

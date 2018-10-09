@@ -4,30 +4,28 @@ Pilot your rgb led matrix with Nodejs on Raspberry Pi ! Nodejs binding of rpi-rg
 
 **Fork of: https://github.com/zeitungen/node-rpi-rgb-led-matrix**
 
-**Actively being maintained and modifid for: https://github.com/keptan/node-red-contrib-led-matrix**
+**Actively being maintained and modifid for: https://github.com/easybotics/node-red-contrib-led-matrix**
 
 **It is binding recent version of rpi-rgb-led-matrix library.**
 
-## Compatibility
-NOTE: node-rpi-rgb-led-matrix should work across Node.js versions 0.8, 0.10, 0.12, 4 and 5 as it uses [Native Abstractions](https://github.com/nodejs/nan). *HOWEVER* there is a problem with the Node.js version 0.10.29 packaged with Raspbian Jessie 2015-11-21 which breaks Native Abstractions. The easiest fix is to make a minor edit to your v8.js file; this and other solutions outlined on [this Raspberry Pi Forum post](https://www.raspberrypi.org/forums/viewtopic.php?f=66&t=127939). 
 
 ### Installation with npm
 ```
-$ npm i node-rpi-rgb-led-matrix
+$ npm i easybotics-rpi-rgb-led-matrix
 ```
 
 ### Installation with git
 
 ```
-$ git clone --recursive https://github.com/zeitungen/node-rpi-rgb-led-matrix.git
-$ cd node-rpi-rgb-led-matrix
+$ git clone --recursive https://github.com/easybotics/node-rpi-rgb-led-matrix.git
+$ cd easybotics-rpi-rgb-led-matrix
 $ npm i
 ```
 
 ## Get some Fun
 
 ```js
-var LedMatrix = require("node-rpi-rgb-led-matrix");
+var LedMatrix = require("easybotics-rpi-rgb-led-matrix");
 
 //init a 16 rows  by 16 cols led matrix 
 //default hardware mapping is 'regular', could be 'adafruit-hat-pwm' ect 

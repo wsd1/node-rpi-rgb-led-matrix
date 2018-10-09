@@ -70,6 +70,7 @@ void LedMatrix::Init(v8::Local<v8::Object> exports) {
 	Nan::SetPrototypeMethod(tpl, "drawText", DrawText);
 	Nan::SetPrototypeMethod(tpl, "drawCircle", DrawCircle);
 	Nan::SetPrototypeMethod(tpl, "drawLine", DrawLine);
+	Nan::SetPrototypeMethod(tpl, "brightness", Brightness);
 	
 	constructor.Reset(tpl->GetFunction());
 
@@ -338,11 +339,7 @@ void LedMatrix :: Brightness (const Nan::FunctionCallbackInfo<Value>& args)
 	LedMatrix* matrix = ObjectWrap::Unwrap<LedMatrix>(args.Holder()); 
 	int b = 100; 
 
-	if (args.Length() > 0 && args[0]->IsNumber())
-	{
-
-		b = args[0]->ToInteger()->Value();
-	}
+	b = args[0]->ToInteger()->Value();
 
 	return matrix->Brightness(b);
 }

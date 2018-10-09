@@ -1,6 +1,6 @@
 {
   "name": "easybotics-rpi-rgb-led-matrix",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "control led matrix with nodejs on raspberry pi. Nodejs binding of https://github.com/hzeller/rpi-rgb-led-matrix",
   "keywords": [
     "raspberry",

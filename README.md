@@ -27,7 +27,7 @@ $ npm i
 ## Get some Fun
 
 ```js
-var LedMatrix = require("node-rpi-rgb-led-matrix");
+var LedMatrix = require("easybotics-rpi-rgb-led-matrix");
 
 //init a 16 rows  by 16 cols led matrix 
 //default hardware mapping is 'regular', could be 'adafruit-hat-pwm' ect 

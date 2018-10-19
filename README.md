@@ -4,7 +4,7 @@ Pilot your rgb led matrix with Nodejs on Raspberry Pi ! Nodejs binding of rpi-rg
 
 **Fork of: https://github.com/zeitungen/node-rpi-rgb-led-matrix**
 
-**Actively being maintained and modifid for: https://github.com/easybotics/node-red-contrib-led-matrix**
+**Actively being maintained and modified for: https://github.com/easybotics/node-red-contrib-led-matrix**
 
 **It is binding recent version of rpi-rgb-led-matrix library.**
 

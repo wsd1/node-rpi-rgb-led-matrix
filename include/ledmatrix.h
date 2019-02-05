@@ -31,71 +31,73 @@ using rgb_matrix::GPIO;
  * Class: LedMatrix
  *	Wrapper for rpi-rgb-led-matrix.
  */
-class LedMatrix : public node::ObjectWrap {
+class LedMatrix : public node::ObjectWrap 
+{
 	public:
-		static Nan::Persistent<v8::Function> constructor;
-		static void Init(v8::Local<v8::Object> exports);
+	static Nan::Persistent<v8::Function> constructor;
+	static void Init(v8::Local<v8::Object> exports);
 
-		int GetWidth();
-		int GetHeight();
-		void SetPixel(int x, int y, uint8_t r, uint8_t g, uint8_t b);
-		void Clear();
-		void Clear(int x, int y, int w, int h);
-		void Fill(uint8_t r, uint8_t g, uint8_t b);
-		void SetImage(Image* img);
-		void Draw(int screenx, int screeny, int width, int height, int imgx, int imgy,
+	int GetWidth	(void);
+	int GetHeight	(void);
+	void SetPixel	(int x, int y, uint8_t r, uint8_t g, uint8_t b);
+	void Clear		(void);
+	void Clear		(int x, int y, int w, int h);
+	void Fill		(uint8_t r, uint8_t g, uint8_t b);
+	void SetImage	(Image* img);
+	void Draw		(int screenx, int screeny, int width, int height, int imgx, int imgy,
 					bool looph, bool loopv);
-		void DrawText(int, int, std::tuple<int, int, int>, const char* text, const char* fontFile); 
-		void DrawCircle(int, int, int, std::tuple<int, int, int>);
-		void DrawLine (int, int, int, int, std::tuple<int, int, int>); 
-		void Brightness (int); 
 
+	void DrawText	(int, int, std::tuple<int, int, int>, const char* text, const char* fontFile); 
+	void DrawCircle	(int, int, int, std::tuple<int, int, int>);
+	void DrawLine	(int, int, int, int, std::tuple<int, int, int>); 
+	void Brightness (int); 
 
-		void Update (void);
+	void Update		(void);
 
 	protected:
-		LedMatrix(int rows , int cols , int chained_displays , int parallel_displays, int brightness, const char* mapping);
+	LedMatrix (int rows , int cols , int chained_displays , int parallel_displays, int brightness, const char* mapping);
 
-		virtual ~LedMatrix();
+	virtual ~LedMatrix (void);
 
-		static void New(const Nan::FunctionCallbackInfo<v8::Value>& args);
+	static void New	(const Nan::FunctionCallbackInfo<v8::Value>& args);
 
-		static void GetWidth(const Nan::FunctionCallbackInfo<v8::Value>& args);
-		static void GetHeight(const Nan::FunctionCallbackInfo<v8::Value>& args);
-		static void SetPixel(const Nan::FunctionCallbackInfo<v8::Value>& args);
-		static void Clear(const Nan::FunctionCallbackInfo<v8::Value>& args);
-		static void Fill(const Nan::FunctionCallbackInfo<v8::Value>& args);
-		static void SetImageBuffer(const Nan::FunctionCallbackInfo<v8::Value>& args);
-		static void Draw(const Nan::FunctionCallbackInfo<v8::Value>& args);
-		static void Update (const Nan::FunctionCallbackInfo<v8::Value>& args);
-		static void DrawText (const Nan::FunctionCallbackInfo<v8::Value>& args);
-		static void DrawCircle (const Nan::FunctionCallbackInfo<v8::Value>& args);
-		static void DrawLine  (const Nan::FunctionCallbackInfo<v8::Value>& args);
-		static void Brightness (const Nan::FunctionCallbackInfo<v8::Value>& args);
+	static void GetWidth		(const Nan::FunctionCallbackInfo<v8::Value>& args);
+	static void GetHeight		(const Nan::FunctionCallbackInfo<v8::Value>& args);
+	static void SetPixel		(const Nan::FunctionCallbackInfo<v8::Value>& args);
+	static void Clear			(const Nan::FunctionCallbackInfo<v8::Value>& args);
+	static void Fill			(const Nan::FunctionCallbackInfo<v8::Value>& args);
+	static void SetImageBuffer	(const Nan::FunctionCallbackInfo<v8::Value>& args);
+	static void Draw			(const Nan::FunctionCallbackInfo<v8::Value>& args);
+	static void Update			(const Nan::FunctionCallbackInfo<v8::Value>& args);
+	static void DrawText		(const Nan::FunctionCallbackInfo<v8::Value>& args);
+	static void DrawCircle		(const Nan::FunctionCallbackInfo<v8::Value>& args);
+	static void DrawLine		(const Nan::FunctionCallbackInfo<v8::Value>& args);
+	static void Brightness		(const Nan::FunctionCallbackInfo<v8::Value>& args);
 
-		static void Scroll(const Nan::FunctionCallbackInfo<v8::Value>& args);
-		static void UV_Scroll(uv_work_t* work);
-		static void UV_AfterScroll(uv_work_t* work, int status);
+	static void Scroll			(const Nan::FunctionCallbackInfo<v8::Value>& args);
+	static void UV_Scroll		(uv_work_t* work);
+	static void UV_AfterScroll	(uv_work_t* work, int status);
 
-		static std::map<std::string, rgb_matrix::Font> fontMap;
+	static std::map<std::string, rgb_matrix::Font> fontMap;
 
 	private:
 
-		GPIO io;
-		RGBMatrix* matrix;
-		FrameCanvas* canvas;
+	GPIO io;
+	RGBMatrix* matrix;
+	FrameCanvas* canvas;
 
 
-		Image* image;
+	Image* image;
 
-		struct uvscroll {
-			LedMatrix* matrix;
-			Nan::Callback* callback;
-			int startx;	int starty;
-			int width;	int height;
-			int scroll;	int loop;
-			int speed;
-		};
+	struct uvscroll 
+	{
+		LedMatrix* matrix;
+		Nan::Callback* callback;
+		int startx;	int starty;
+		int width;	int height;
+		int scroll;	int loop;
+		int speed;
+	};
 };
 
 #endif

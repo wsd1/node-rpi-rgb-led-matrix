@@ -25,9 +25,8 @@ using rgb_matrix::GPIO;
 Nan::Persistent<v8::Function> LedMatrix::constructor;
 std::map<std::string, rgb_matrix::Font> LedMatrix::fontMap;
 
-
-LedMatrix::LedMatrix(int rows, int cols , int parallel_displays, int chained_displays, int brightness, const char* mapping) {
-
+LedMatrix::LedMatrix (int rows, int cols , int parallel_displays, int chained_displays, int brightness, const char* mapping) 
+{
 	RGBMatrix::Options defaults; 
 	defaults.rows = rows;
 	defaults.cols = cols; 
@@ -44,13 +43,14 @@ LedMatrix::LedMatrix(int rows, int cols , int parallel_displays, int chained_dis
 	image = NULL;
 }
 
-LedMatrix::~LedMatrix() {
+LedMatrix::~LedMatrix (void) 
+{
 	delete image;
 	delete matrix;
 }
 
-void LedMatrix::Init(v8::Local<v8::Object> exports) {
-
+void LedMatrix::Init (v8::Local<v8::Object> exports) 
+{
 	Nan::HandleScope scope;
 	
 	v8::Local<v8::FunctionTemplate> tpl = Nan::New<v8::FunctionTemplate>(New);
@@ -77,39 +77,50 @@ void LedMatrix::Init(v8::Local<v8::Object> exports) {
 	exports->Set(Nan::New("LedMatrix").ToLocalChecked(), tpl->GetFunction());
 }
 
-int LedMatrix::GetWidth() {
+int LedMatrix::GetWidth	(void) 
+{
 	return canvas->width();
 }
 
-int LedMatrix::GetHeight() {
+int LedMatrix::GetHeight (void) 
+{
 	return canvas->height();
 }
 
-void LedMatrix::SetPixel(int x, int y, uint8_t r, uint8_t g, uint8_t b) {
+void LedMatrix::SetPixel (int x, int y, uint8_t r, uint8_t g, uint8_t b) 
+{
 	canvas->SetPixel(x, y, r, g, b);
 }
 
-void LedMatrix::Clear() {
+void LedMatrix::Clear (void) 
+{
 	canvas->Clear();
 }
 
-void LedMatrix::Clear(int x, int y, int w, int h) {
-	for(int j=y; j<y+h; j++) {
-		for(int i=x; i<x+w; i++) {
+void LedMatrix::Clear (int x, int y, int w, int h) 
+{
+	for(int j=y; j<y+h; j++) 
+	{
+		for(int i=x; i<x+w; i++) 
+		{
 			canvas->SetPixel(i, j, 0, 0, 0);
 		}
 	}
 }
 
-void LedMatrix::Fill(uint8_t r, uint8_t g, uint8_t b) {
+void LedMatrix::Fill (uint8_t r, uint8_t g, uint8_t b) 
+{
 	canvas->Fill(r, g, b);
 }
 
-void LedMatrix::SetImage(Image* img) {
-	if(image && image->IsValid()) {
+void LedMatrix::SetImage (Image* img) 
+{
+	if(image && image->IsValid()) 
+	{
 		delete image;
 		image = NULL;
 	}
+
 	image = new Image();
 	image->Reset();
 	image->SetWidth(img->GetWidth());
@@ -119,7 +130,8 @@ void LedMatrix::SetImage(Image* img) {
 	image->SetPixels(p);
 }
 
-void LedMatrix::Draw(int screenx, int screeny, int width, int height, int imgx, int imgy, bool looph, bool loopv) {
+void LedMatrix::Draw (int screenx, int screeny, int width, int height, int imgx, int imgy, bool looph, bool loopv) 
+{
 	int w = width;
 	if(image->GetWidth() - imgx < w && !looph)
 		w = image->GetWidth() - imgx;
@@ -128,10 +140,12 @@ void LedMatrix::Draw(int screenx, int screeny, int width, int height, int imgx, 
 	if(image->GetHeight() - imgy < h && !loopv)
 		h = image->GetHeight() - imgy;
 
-	for(int i = 0; i < w; i++) {
+	for(int i = 0; i < w; i++) 
+	{
 		int px = (i + imgx) % image->GetWidth();
 		int sx = i + screenx;
-		for(int j = 0; j < h; j++) {
+		for(int j = 0; j < h; j++) 
+		{
 			int py = (j + imgy) % image->GetHeight();
 			int sy = j + screeny;
 			Pixel p = image->GetPixel(px, py);
@@ -215,8 +229,6 @@ void LedMatrix :: DrawText (const Nan::FunctionCallbackInfo<Value>& args)
 	{
 		b = args[6]->ToInteger()->Value();
 	}
-
-
 	
 	return matrix->DrawText(x, y, std::make_tuple(r,g,b), text.c_str(), font.c_str());
 }
@@ -348,9 +360,11 @@ void LedMatrix :: Brightness (const Nan::FunctionCallbackInfo<Value>& args)
 	
 
 
-void LedMatrix::New(const Nan::FunctionCallbackInfo<Value>& args) {
+void LedMatrix::New(const Nan::FunctionCallbackInfo<Value>& args) 
+{
 	// throw an error if it's not a constructor 
-	if (!args.IsConstructCall()) {
+	if (!args.IsConstructCall()) 
+	{
 		Nan::ThrowError("LedMatrix::must be called as a constructor with 'new' keyword");
 	}
 
@@ -388,7 +402,6 @@ void LedMatrix::New(const Nan::FunctionCallbackInfo<Value>& args) {
 	}
 
 	// make the matrix
-
 	LedMatrix* matrix = new LedMatrix(rows, cols, chained, parallel, brightness,  mapping.c_str());
 	matrix->Wrap(args.This());
 
@@ -396,17 +409,20 @@ void LedMatrix::New(const Nan::FunctionCallbackInfo<Value>& args) {
 	args.GetReturnValue().Set(args.This());
 }
 
-void LedMatrix::GetWidth(const Nan::FunctionCallbackInfo<v8::Value>& args) {
+void LedMatrix::GetWidth (const Nan::FunctionCallbackInfo<v8::Value>& args) 
+{
 	LedMatrix* matrix = ObjectWrap::Unwrap<LedMatrix>(args.Holder());
 	args.GetReturnValue().Set(Nan::New<v8::Number>(matrix->GetWidth()));
 }
 
-void LedMatrix::GetHeight(const Nan::FunctionCallbackInfo<v8::Value>& args) {
+void LedMatrix::GetHeight (const Nan::FunctionCallbackInfo<v8::Value>& args) 
+{
 	LedMatrix* matrix = ObjectWrap::Unwrap<LedMatrix>(args.Holder());
 	args.GetReturnValue().Set(Nan::New<v8::Number>(matrix->GetHeight()));
 }
 
-void LedMatrix::SetPixel(const Nan::FunctionCallbackInfo<v8::Value>& args) {
+void LedMatrix::SetPixel (const Nan::FunctionCallbackInfo<v8::Value>& args) 
+{
 	LedMatrix* matrix = ObjectWrap::Unwrap<LedMatrix>(args.Holder());
 
 	if(args.Length() != 5 || !args[0]->IsNumber() || !args[1]->IsNumber() || !args[2]->IsNumber()
@@ -423,7 +439,8 @@ void LedMatrix::SetPixel(const Nan::FunctionCallbackInfo<v8::Value>& args) {
   	matrix->SetPixel(x, y, r, g, b);
 }
 
-void LedMatrix::Clear(const Nan::FunctionCallbackInfo<v8::Value>& args) {
+void LedMatrix::Clear (const Nan::FunctionCallbackInfo<v8::Value>& args) 
+{
 	LedMatrix* matrix = ObjectWrap::Unwrap<LedMatrix>(args.Holder());
 
 	if(args.Length() == 4 && args[0]->IsNumber() && args[1]->IsNumber() && args[2]->IsNumber() && args[3]->IsNumber()) {
@@ -437,7 +454,8 @@ void LedMatrix::Clear(const Nan::FunctionCallbackInfo<v8::Value>& args) {
 	}
 }
 
-void LedMatrix::Fill(const Nan::FunctionCallbackInfo<v8::Value>& args) {
+void LedMatrix::Fill (const Nan::FunctionCallbackInfo<v8::Value>& args) 
+{
 	LedMatrix* matrix = ObjectWrap::Unwrap<LedMatrix>(args.Holder());
 
 	if(args.Length() != 3 || !args[0]->IsNumber() || !args[1]->IsNumber() || !args[2]->IsNumber()) {
@@ -450,7 +468,8 @@ void LedMatrix::Fill(const Nan::FunctionCallbackInfo<v8::Value>& args) {
   	matrix->Fill(r, g, b);
 }
 
-void LedMatrix::SetImageBuffer(const Nan::FunctionCallbackInfo<v8::Value>& args) {
+void LedMatrix::SetImageBuffer (const Nan::FunctionCallbackInfo<v8::Value>& args) 
+{
 	if(args.Length() < 3 || !args[1]->IsNumber() || !args[2]->IsNumber()) {
 		return Nan::ThrowTypeError("Parameters error: SetImageBuffer(buffer, width, height)");
 	}
@@ -483,7 +502,8 @@ void LedMatrix::SetImageBuffer(const Nan::FunctionCallbackInfo<v8::Value>& args)
 	matrix->SetImage(img);
 }
 
-void LedMatrix::Draw(const Nan::FunctionCallbackInfo<v8::Value>& args) {
+void LedMatrix::Draw (const Nan::FunctionCallbackInfo<v8::Value>& args) 
+{
 	LedMatrix* matrix = ObjectWrap::Unwrap<LedMatrix>(args.This());
 
 	int startx = 0;
@@ -509,7 +529,8 @@ void LedMatrix::Draw(const Nan::FunctionCallbackInfo<v8::Value>& args) {
     matrix->Draw(startx, starty, width, height, imgx, imgy, looph, loopv);
 }
 
-void LedMatrix::Scroll(const Nan::FunctionCallbackInfo<v8::Value>& args) {
+void LedMatrix::Scroll (const Nan::FunctionCallbackInfo<v8::Value>& args) 
+{
 	LedMatrix* matrix = ObjectWrap::Unwrap<LedMatrix>(args.This());
 
 	if(args.Length() == 0 || !args[0]->IsFunction()) {
@@ -558,14 +579,16 @@ void LedMatrix::Scroll(const Nan::FunctionCallbackInfo<v8::Value>& args) {
 	}
 }
 
-void LedMatrix::Update(const Nan::FunctionCallbackInfo<v8::Value>& args) {
+void LedMatrix::Update (const Nan::FunctionCallbackInfo<v8::Value>& args) 
+{
 	LedMatrix* matrix = ObjectWrap::Unwrap<LedMatrix>(args.Holder());
 
 	matrix->Update();
 
 }
 
-void LedMatrix::UV_Scroll(uv_work_t* work) {
+void LedMatrix::UV_Scroll (uv_work_t* work) 
+{
 	uvscroll* uv = static_cast<uvscroll*>(work->data);
 
 	assert(uv->matrix != NULL);
@@ -640,7 +663,8 @@ void LedMatrix::UV_Scroll(uv_work_t* work) {
 	}
 }
 
-void LedMatrix::UV_AfterScroll(uv_work_t* work, int status) {
+void LedMatrix::UV_AfterScroll (uv_work_t* work, int status) 
+{
 	uvscroll* uv = static_cast<uvscroll*>(work->data);
 	uv->matrix->Unref();
 	uv->callback->Call(0, 0);

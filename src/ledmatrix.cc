@@ -17,6 +17,8 @@
 #include <ledmatrix.h>
 #include <graphics.h>
 
+#include <iostream>
+
 using namespace v8;
 using namespace node;
 using namespace rgb_matrix;
@@ -25,7 +27,7 @@ using rgb_matrix::GPIO;
 Nan::Persistent<v8::Function> LedMatrix::constructor;
 std::map<std::string, rgb_matrix::Font> LedMatrix::fontMap;
 
-LedMatrix::LedMatrix (int rows, int cols , int parallel_displays, int chained_displays, int brightness, const char* mapping) 
+LedMatrix::LedMatrix (int rows, int cols , int parallel_displays, int chained_displays, int brightness, const char* mapping, const char* rgbseq) 
 {
 	RGBMatrix::Options defaults; 
 	defaults.rows = rows;
@@ -34,6 +36,7 @@ LedMatrix::LedMatrix (int rows, int cols , int parallel_displays, int chained_di
 	defaults.parallel = parallel_displays; 
 	defaults.brightness = brightness;
 	defaults.hardware_mapping = mapping;
+	defaults.led_rgb_sequence = rgbseq;
 
 	assert(io.Init());
 	matrix = new RGBMatrix(&io, defaults);	
@@ -375,6 +378,7 @@ void LedMatrix::New(const Nan::FunctionCallbackInfo<Value>& args)
 	int parallel = 1;
 	int brightness = 100;
 	std::string mapping = "regular";
+	std::string rgbSeq = "RGB";
 
 	if(args.Length() > 0 && args[0]->IsNumber()) {
 		rows = args[0]->ToInteger()->Value();
@@ -401,8 +405,15 @@ void LedMatrix::New(const Nan::FunctionCallbackInfo<Value>& args)
 		mapping = std::string(*str);
 	}
 
+	if(args.Length() > 6 && args[6]->IsString()) {
+
+		v8::String::Utf8Value str(args[6]->ToString());
+		rgbSeq = std::string(*str);
+	}
+
+
 	// make the matrix
-	LedMatrix* matrix = new LedMatrix(rows, cols, chained, parallel, brightness,  mapping.c_str());
+	LedMatrix* matrix = new LedMatrix(rows, cols, chained, parallel, brightness,  mapping.c_str(), rgbSeq.c_str());
 	matrix->Wrap(args.This());
 
 	// return this object

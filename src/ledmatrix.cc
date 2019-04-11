@@ -47,7 +47,7 @@ LedMatrix::LedMatrix (int rows, int cols , int parallel_displays, int chained_di
 	defaults.cols = cols; 
 	defaults.chain_length = chained_displays;
 	defaults.parallel = parallel_displays; 
-	defaults.brightness = 10;
+	defaults.brightness = brightness;
 	defaults.hardware_mapping = mapping;
 	defaults.led_rgb_sequence = rgbseq;
 

@@ -53,7 +53,7 @@ LedMatrix::LedMatrix (int rows, int cols , int parallel_displays, int chained_di
 
 	//temp debug output
 	//parse extra settings flags for POWER_USERS (TM)
-	std::cout << rgb_matrix::ParseOptionsFromFlags(&num, &d, &defaults, &runtime, false) << std::endl;
+	if(num > 0) std::cout << rgb_matrix::ParseOptionsFromFlags(&num, &d, &defaults, &runtime, false) << std::endl;
 
 	assert(io.Init());
 	matrix = new RGBMatrix(&io, defaults);	

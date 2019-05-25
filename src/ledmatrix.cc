@@ -31,8 +31,10 @@ std::map<std::string, rgb_matrix::Font> LedMatrix::fontMap;
 LedMatrix::LedMatrix (int rows, int cols , int parallel_displays, int chained_displays, int brightness, const char* mapping, const char* rgbseq, std::vector<std::string> flags) 
 {
 
+	//dump out flags into a vector of char* <CRRINNGGEEEEEE>
 	std::vector<char*> c_strs;
-	for(auto f : flags) 
+	c_strs.push_back("bin");
+	for(auto &f : flags) //FIXED THIS BEING VALUE LOOP INSTEAD OF REFERENCE LOOP AAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHH
 	{
 		c_strs.push_back(&f[0]); //every known version of std::string uses continuos memory so this is safe~ 
 		std::cout << &f[0] << std::endl;
@@ -43,6 +45,8 @@ LedMatrix::LedMatrix (int rows, int cols , int parallel_displays, int chained_di
 
 	RGBMatrix::Options defaults; 
     rgb_matrix::RuntimeOptions runtime;
+
+
 	defaults.rows = rows;
 	defaults.cols = cols; 
 	defaults.chain_length = chained_displays;
@@ -51,12 +55,13 @@ LedMatrix::LedMatrix (int rows, int cols , int parallel_displays, int chained_di
 	defaults.hardware_mapping = mapping;
 	defaults.led_rgb_sequence = rgbseq;
 
+	std::cout << rgb_matrix::ParseOptionsFromFlags(&num, &d, &defaults, &runtime, true) << std::endl;
 	//temp debug output
 	//parse extra settings flags for POWER_USERS (TM)
-	if(num > 0) std::cout << rgb_matrix::ParseOptionsFromFlags(&num, &d, &defaults, &runtime, false) << std::endl;
 
 	assert(io.Init());
-	matrix = new RGBMatrix(&io, defaults);	
+	matrix = CreateMatrixFromOptions(defaults, runtime);
+	//matrix = new RGBMatrix(&io, defaults);	
 	matrix->set_luminance_correct(true);
 
 	canvas = matrix->CreateFrameCanvas();

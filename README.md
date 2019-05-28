@@ -88,8 +88,11 @@ The API has changed somewhat since the zeitungen version
 ```
 	get width of addressable space
 ```
+```
 scroll
 setImageBuffer
+mysterious methods back from before we picked up this library 
+```
 * **setPixel (x, y, r, g, b)**
 ```
 	set pixel to a color

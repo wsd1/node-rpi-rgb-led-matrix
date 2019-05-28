@@ -66,7 +66,7 @@ The API has changed somewhat since the zeitungen version
 ```
 	draw colored line to the buffer
 ```
-* **drawText (x, y, text, font, r, g, b) **
+* **drawText (x, y, text, font, r, g, b)**
 ``` 
 	draw colored text to the buffer
 	to use the fonts that come with the repo it looks something like this
@@ -76,7 +76,7 @@ The API has changed somewhat since the zeitungen version
 	led.drawText(x, y, input, font, r, g, b);
 	led.update();
 ```
-* **fill (r, g, b) **
+* **fill (r, g, b)**
 ```
 	fill the buffer with a color
 ```

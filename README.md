@@ -1,4 +1,8 @@
 # easybotics-rpi-rgb-led-matrix
+
+# not supporting Node13 or Node12 right now, will address soon
+# check out this guys fork: https://github.com/easybotics/node-rpi-rgb-led-matrix/pull/9 
+# targetted at raspbian jesse 
 Pilot your rgb led matrix with Nodejs on Raspberry Pi ! Nodejs binding of rpi-rgb-led-matrix library https://github.com/hzeller/rpi-rgb-led-matrix
 
 

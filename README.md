@@ -1,5 +1,6 @@
 # easybotics-rpi-rgb-led-matrix
 
+# WORKS ON THE RASPBERRY PI 3B AND RASPBERRY PI 4!!!!
 # not supporting Node13 or Node12 right now, will address soon
 # check out this guys fork: https://github.com/easybotics/node-rpi-rgb-led-matrix/pull/9 
 # targetted at raspbian jesse 

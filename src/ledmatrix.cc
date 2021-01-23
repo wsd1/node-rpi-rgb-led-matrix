@@ -28,40 +28,40 @@ using rgb_matrix::GPIO;
 Nan::Persistent<Function> LedMatrix::constructor;
 std::map<std::string, rgb_matrix::Font> LedMatrix::fontMap;
 
-LedMatrix::LedMatrix (int rows, int cols, int parallel_displays, int chained_displays, int brightness, const char* mapping, const char* rgbseq, std::vector<std::string> flags) 
+LedMatrix::LedMatrix (int rows, int cols, int parallel_displays, int chained_displays, int brightness, const char* mapping, const char* rgbseq, std::vector<std::string> flags)
 {
-
 	//dump out flags into a vector of char* <CRRINNGGEEEEEE>
 	std::vector<char*> c_strs;
 	c_strs.push_back("bin");
-	for(auto &f : flags) //FIXED THIS BEING VALUE LOOP INSTEAD OF REFERENCE LOOP AAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHH
+	for(auto &f : flags)
 	{
-		c_strs.push_back(&f[0]); //every known version of std::string uses continuos memory so this is safe~ 
+		c_strs.push_back(&f[0]); //every known version of std::string uses continuos memory so this is safe~
 		std::cout << &f[0] << std::endl;
 	}
 
 	int num = c_strs.size();
 	char** d = c_strs.data();
 
-	RGBMatrix::Options defaults; 
+	RGBMatrix::Options defaults;
 	rgb_matrix::RuntimeOptions runtime;
 
-
 	defaults.rows = rows;
-	defaults.cols = cols; 
+	defaults.cols = cols;
 	defaults.chain_length = chained_displays;
-	defaults.parallel = parallel_displays; 
+	defaults.parallel = parallel_displays;
 	defaults.brightness = brightness;
 	defaults.hardware_mapping = mapping;
 	defaults.led_rgb_sequence = rgbseq;
 
-	std::cout << rgb_matrix::ParseOptionsFromFlags(&num, &d, &defaults, &runtime, true) << std::endl;
-	//temp debug output
-	//parse extra settings flags for POWER_USERS (TM)
+	//By default, don't drop root privileges (prevents existing code from
+	//losing root privileges unexpectedly and breaking). Can be overridden
+	//by adding --led-drop-privs to your flags array.
+	runtime.drop_privileges = 0;
 
-	assert(io.Init());
-	//matrix = CreateMatrixFromOptions(defaults, runtime);
-	matrix = new RGBMatrix(&io, defaults);	
+	//FIXME: This is called CreateFromFlags in the latest version of the hzeller library. Fix that when we update.
+	matrix = rgb_matrix::CreateMatrixFromFlags(&num, &d, &defaults, &runtime, true);
+	assert(matrix != NULL);
+
 	matrix->set_luminance_correct(true);
 
 	canvas = matrix->CreateFrameCanvas();

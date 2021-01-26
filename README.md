@@ -44,12 +44,12 @@ The API has changed somewhat since the zeitungen version
 ## LedMatrix API
 
 **All operations modify a local frame buffer, only after calling 'Update' are they printed to the display**
-* **Constructor: LedMatrix (rows, cols, chainedDisplays, parallelDisplays, brightness, hardware-mapping, rgbSequence, cliFlags)**
+* **Constructor: LedMatrix (rows, cols, parallelDisplays, chainedDisplays, brightness, hardware-mapping, rgbSequence, cliFlags)**
 ```
 	rows: height of led panels in pixels
 	cols: width of led panels in pixels
-	chainedDisplays: number of chained panels
 	parallelDisplays: number of parallel panels
+	chainedDisplays: number of chained panels
 	brightness: initial brightness 0 - 100
 	hardware-mapping: 'regular', 'adafruit-hat' etc
 	rgbSequence: default 'RGB'

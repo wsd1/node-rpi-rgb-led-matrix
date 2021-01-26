@@ -399,8 +399,8 @@ void LedMatrix::New(const Nan::FunctionCallbackInfo<Value>& args)
 	// grab parameters
 	int rows = 32;
 	int cols = 32;
-	int chained = 1;
 	int parallel = 1;
+	int chained = 1;
 	int brightness = 100;
 	std::string mapping = "regular";
 	std::string rgbSeq = "RGB";
@@ -415,10 +415,10 @@ void LedMatrix::New(const Nan::FunctionCallbackInfo<Value>& args)
 	}
 
 	if(args.Length() > 2 && args[2]->IsNumber()) {
-		chained = Nan::To<int>(args[2]).FromJust();
+		parallel = Nan::To<int>(args[2]).FromJust();
 	}
 	if(args.Length() > 3 && args[3]->IsNumber()) {
-		parallel = Nan::To<int>(args[3]).FromJust();
+		chained = Nan::To<int>(args[3]).FromJust();
 	}
 
 	if(args.Length() > 4 && args[4]->IsNumber())  {
@@ -447,7 +447,7 @@ void LedMatrix::New(const Nan::FunctionCallbackInfo<Value>& args)
 	}
 
 	// make the matrix
-	LedMatrix* matrix = new LedMatrix(rows, cols, chained, parallel, brightness,  mapping.c_str(), rgbSeq.c_str(), strings);
+	LedMatrix* matrix = new LedMatrix(rows, cols, parallel, chained, brightness, mapping.c_str(), rgbSeq.c_str(), strings);
 	matrix->Wrap(args.This());
 
 	// return this object

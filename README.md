@@ -1,3 +1,16 @@
+# 测试总结
+
+20240215:在rpi3b上测试,添加了example目录。setpixel函数可以亮点。但drawText没有作用。
+
+该binding设计的比较简单，包装了很多底层api，在nodejs的背景下使用体验不是很好。我看了原作者的repo，其还在此基础上提供了一个node-red的上层包装。
+
+https://github.com/easybotics/node-red-contrib-easybotics-led-matrix
+
+个人体验是，建议尝试一下 rpi-led-matrix 这个ts binding。其设计的更加完整系统。
+
+此repo就此不再继续。
+
+---
 # easybotics-rpi-rgb-led-matrix
 
 # WORKS ON THE RASPBERRY PI 3B AND RASPBERRY PI 4!!!!
